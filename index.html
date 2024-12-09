@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="assets/css/stylelogin.css">
+</head>
+
+<body>
+    <main class="login-container">
+        <header class="header">
+            <a href="#contact" class="nav-link">Contact</a>
+            <a href="#about" class="nav-link">About</a>
+        </header>
+
+        <img src="assets/img/Frame3.png" alt="Company logo" class="logo">
+        <p class="login-instructions">
+            Masukan username dan password <br> (gunakan NIM & password)
+        </p>
+        <form class="user" action="login.php" method="POST">
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <img src="assets/img/vector1.png" alt="" class="input-icon">
+                    <label for="username" class="visually-hidden">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Username" aria-label="Username" required>
+                </div>
+            </div>
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <img src="assets/img/vector2.png" alt="" class="input-icon">
+                    <label for="password" class="visually-hidden">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password" aria-label="Password" required>
+                </div>
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        
+    </main>
+    <script src="assets/js/login.js">
+    </script>
+</body>
+
+</html>
