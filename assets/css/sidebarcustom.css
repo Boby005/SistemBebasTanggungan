@@ -1,0 +1,45 @@
+.sidebar {
+    background-color: #244282; /* Dark Blue */
+}
+
+.sidebar .sidebar-brand {
+    text-align: center;
+    margin-bottom: 20px; /* Add space below */
+    margin-top: 20px; /* Add space above */
+}
+
+.sidebar .sidebar-brand-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.sidebar .nav-item .nav-link {
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar .nav-item .nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease; /* Tambahkan transisi */
+  }
+  
+  .sidebar .nav-item .nav-link:hover {
+    background-color: #f39c12; 
+    color: white;
+  }
+  .sidebar .nav-item .nav-link {
+    will-change: background-color; /* Beri tahu browser bahwa background-color akan berubah */
+  }
+
+.sidebar .nav-item .nav-link i {
+    font-size: 18px;
+    color: white;
+}
+
+.sidebar-divider {
+    border-top: 1px solid #ffffff30; /* Light Divider */
+    margin: 10px 0; /* Add spacing around the divider */
+}

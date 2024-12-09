@@ -1,0 +1,128 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Inter, sans-serif;
+}
+.login-container {
+    background-color: #244282;
+    display: flex;
+    padding: 216px 0;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    position: relative;
+    min-height: 100vh;
+}
+.header {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 20px;
+}
+.nav-link {
+    color: #fff;
+    padding: 10px;
+    font: 200 15px Inter, sans-serif;
+    text-decoration: none;
+}
+.logo {
+    aspect-ratio: 4.83;
+    object-fit: contain;
+    object-position: center;
+    width: 400px;
+    margin-top: -70px;
+    max-width: 100%;
+}
+.login-instructions {
+    color: #3D46EA;
+    text-align: center;
+    margin-top: 79px;
+    font: 200 15px Inter, sans-serif;
+}
+.input-container {
+    display: flex;
+    margin-top: 40px; /* Perkecil margin */
+    width: 200px; /* Kurangi lebar */
+    max-width: 100%;
+    align-items: center;
+    color: #3D46EA;
+    font: 200 13px Inter, sans-serif; /* Kurangi ukuran font */
+}
+.input-wrapper {
+    border-radius: 50px;
+    background-color: #fff;
+    display: flex;
+    width: 200px; /* Sesuaikan dengan input-container */
+    align-items: center;
+    gap: 10px; /* Kurangi jarak antar elemen */
+    justify-content: center;
+    padding: 8px; /* Kurangi padding */
+}
+.input-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    width: 20px; /* Kurangi ukuran ikon */
+    align-self: stretch;
+    margin: auto 0;
+}
+/* .forgot-password {
+    color: #FF3535;
+    text-align: center;
+    margin-top: 24px; 
+    font: 400 14px Inter, sans-serif; 
+    display: block;
+    text-decoration: none;
+} */
+
+.login-button {
+    display: flex;
+    margin-top: 25px; /* Kurangi margin */
+    width: 200px; /* Sesuaikan dengan input-container */
+    max-width: 100%;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    justify-content: center;
+    font: 200 13px Inter, sans-serif; /* Kurangi ukuran font */
+    border-radius: 50px;
+    background-color: #3D46EA;
+    padding: 8px; /* Kurangi padding */
+    border: none;
+    cursor: pointer;
+}
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+input[type="text"],
+input[type="password"] {
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    width: 100%;
+}
+@media (max-width: 991px) {
+    .login-container {
+        padding: 60px 0; /* Kurangi padding */
+    }
+    .logo {
+        margin-top: 30px; /* Kurangi margin */
+    }
+    .login-instructions {
+        margin-top: 30px; /* Kurangi margin */
+    }
+    .input-container {
+        margin-top: 30px; /* Kurangi margin */
+    }
+}
