@@ -8,6 +8,7 @@ VALUES
 ('3','20230008', 'Ila', '081232245969', 'Jl. Mawar No. 10, Surabaya', '1992-08-11', 'P'),
 ('4','20230009', 'Widya Novy', '082232867789', 'Jl. Kenangan No. 5, Yogyakarta', '1995-03-25', 'P');
 
+
 -- Dummy Data Mahasiswa
 
 
@@ -19,6 +20,13 @@ VALUES
     ('2024000001', 'Dedi Pratama', '089876543210', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'L', '2024', '2005-01-12'),
     ('2024000002', 'Rini Marlina', '087654321098', 'Teknologi Informasi', 'Teknik Informatika', 'P', '2024', '2005-06-25');
 
+INSERT INTO mahasiswa (nim, nama_mhs, no_telp_mhs, jurusan_mhs, prodi_mhs, jenis_kelamin_mhs, tahun_angkatan_mhs, tgl_lahir_mhs)
+VALUES
+    ('2341760098', 'Firman Dzaki Rahman', '085174324054', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'L', '2023', '2005-05-24'),
+    ('2341760036', 'Ismi Atika', '085259638605', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2005-06-26'),
+    ('2341760086', 'Isnaeny Tri Larasati', '085826195940', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02'),
+    ('2341760101', 'Fransiska Widya Krisanti', '082138069699', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02');
+select * from mahasiswa;
 INSERT INTO login (username, password, [position])
 VALUES
 ('2341760162', '2341760162', 'mahasiswa'),
