@@ -204,7 +204,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_ta_softcopy.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/ta_softcopy/<?= $row['nim'] ?>_ta_softcopy.pdf"
+                                                            data-pdf="../../Documents/uploads/ta_softcopy/<?= $row['nim'] ?>_ta_softcopy.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -213,7 +213,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_ta_softcopy.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/ta_softcopy/<?= $row['nim'] ?>_ta_softcopy.pdf"
+                                                            data-pdf="../../Documents/uploads/ta_softcopy/<?= $row['nim'] ?>_ta_softcopy.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>

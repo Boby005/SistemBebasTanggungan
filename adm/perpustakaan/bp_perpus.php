@@ -132,7 +132,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="container-fluid">
                     <p></p>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">DATA bebas_pinjam_perpustakaan</h1>
+                    <h1 class="h3 mb-2 text-gray-800">DATA BEBAS PERPUSTAKAAN</h1>
                     <p class="mb-4">Konfirmasi Data Mahasiswa dengan seksama!</p>
 
                     <!-- DataTables Example -->
@@ -204,7 +204,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_bebas_pinjam_perpustakaan.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/bebas_pinjam_perpustakaan/<?= $row['nim'] ?>_bebas_pinjam_perpustakaan.pdf"
+                                                            data-pdf="../../Documents/uploads/bebas_pinjam_perpustakaan/<?= $row['nim'] ?>_bebas_pinjam_perpustakaan.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -213,7 +213,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_bebas_pinjam_perpustakaan.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/bebas_pinjam_perpustakaan/<?= $row['nim'] ?>_bebas_pinjam_perpustakaan.pdf"
+                                                            data-pdf="../../Documents/uploads/bebas_pinjam_perpustakaan/<?= $row['nim'] ?>_bebas_pinjam_perpustakaan.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
