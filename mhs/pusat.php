@@ -21,20 +21,79 @@ $query = "
     WHERE data_alumni.nim = '$nim'
 ";
 
-// Eksekusi query
-$stmt = sqlsrv_query($conn, $query);
+$params = array($nim);
+$stmt = sqlsrv_prepare($conn, $query, $params);
 if (!$stmt) {
     die(print_r(sqlsrv_errors(), true));
 }
 
-// Ambil hasil query
-$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+$result = sqlsrv_execute($stmt);
+if (!$result) {
+    die(print_r(sqlsrv_errors(), true));
+}
 
+$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+if ($row === false) {
+    die("Gagal mengambil data");
+}
+
+$allConfirmed = $row['data_alumni'] && $row['skkm'] && $row['foto_ijazah'] && $row['ukt'];
 // Pastikan untuk memanggil fungsi sqlsrv_free_stmt langsung
 sqlsrv_free_stmt($stmt);
 
-// Mengecek apakah semua status sudah terverifikasi
-$allConfirmed = $row['data_alumni'] && $row['skkm'] && $row['foto_ijazah'] && $row['ukt'];
+//CEK APAKAH NOMOR SURAT SUDAH ADA
+$cekSurat = "select * from dbo.nomor_surat where nim = ? and nama_surat = 'bebas tanggungan akademik'";
+$paramsCek = array($nim);
+$resultCek = sqlsrv_query($conn, $cekSurat, $paramsCek);
+
+if ($resultCek === false) {
+    die("Gagal menjalankan query");
+}
+
+if ($rowCek = sqlsrv_fetch_array($resultCek, SQLSRV_FETCH_ASSOC)) {
+    // ...
+} else {
+    $sqlNomorSurat = "EXEC InsertSurat @nama_surat = 'bebas tanggungan akademik',
+            @nim = ?";
+    $paramsNomor = array($nim);
+    $stmtNomor = sqlsrv_query($conn, $sqlNomorSurat, $paramsNomor);
+
+    sqlsrv_free_stmt($stmtNomor);
+}
+
+sqlsrv_free_stmt($resultCek);
+
+
+// Query untuk mengambil data mahasiswa
+$sql = "SELECT m.nim, m.nama_mhs, m.jurusan_mhs, m.prodi_mhs, ns.nomor_surat, ak.tanggal_adminPusat_konfirmasi
+            FROM dbo.mahasiswa m
+            join dbo.nomor_surat ns on m.nim = ns.nim
+            join dbo.adminPusat_konfirmasi ak on m.nim = ak.nim
+            WHERE m.nim = ? AND ns.nama_surat = 'bebas tanggungan akademik'";
+
+$params = array($nim);
+$result = sqlsrv_query($conn, $sql, $params);
+
+if ($result === false) {
+    die("Kesalahan saat menjalankan query: " . print_r(sqlsrv_errors(), true));
+}
+
+$nama_mahasiswa = "";
+
+// Ambil data dan cek apakah ada
+if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+    $nama_mahasiswa = $row['nama_mhs'];
+    $nim = $row['nim'];
+    $jurusan = $row['jurusan_mhs'];
+    $prodi = $row['prodi_mhs'];
+    $nomor_surat = $row['nomor_surat'];
+    $tanggal = $row['tanggal_adminPusat_konfirmasi'];
+    $tanggalString = $tanggal->format('d-m-Y');
+    $tahun = $tanggal->format('Y');
+}
+
+// Fungsi untuk membebaskan sumber daya yang digunakan oleh statement query
+sqlsrv_free_stmt($result);
 
 // Tutup koneksi
 sqlsrv_close($conn);
@@ -118,6 +177,126 @@ sqlsrv_close($conn);
             /* Abu-abu lebih terang */
         }
     </style>
+
+     <script type="module">
+        import {
+            PDFDocument,
+            rgb
+        } from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('downloadButton');
+
+            // Hanya jalankan jika tombol tidak memiliki atribut 'disabled'
+            if (!button.hasAttribute('disabled')) {
+                button.addEventListener('click', async () => {
+                    try {
+                        // Fungsi untuk mendapatkan cookie
+                        function getCookie(name) {
+                            const nameEQ = name + "=";
+                            const cookies = document.cookie.split("; ");
+                            for (let i = 0; i < cookies.length; i++) {
+                                const c = cookies[i];
+                                if (c.indexOf(nameEQ) === 0) {
+                                    return c.substring(nameEQ.length, c.length);
+                                }
+                            }
+                            return null;
+                        }
+
+                        const username = getCookie('id');
+                        const pdfPath = '../Documents/downloads/generate/Bebas_Tanggungan_Akademik_Pusat.pdf';
+                        const fontPath = './TimesNewRoman/TimesNewRoman.ttf';
+
+                        // Muat PDF
+                        const pdfResponse = await fetch(pdfPath);
+                        if (!pdfResponse.ok) throw new Error(`Could not load PDF: ${pdfResponse.statusText}`);
+                        const pdfArrayBuffer = await pdfResponse.arrayBuffer();
+                        const pdfDoc = await PDFDocument.load(pdfArrayBuffer);
+
+                        // Registrasikan fontkit
+                        pdfDoc.registerFontkit(window.fontkit);
+
+                        // Muat font kustom
+                        const fontResponse = await fetch(fontPath);
+                        if (!fontResponse.ok) throw new Error(`Could not load font: ${fontResponse.statusText}`);
+                        const fontArrayBuffer = await fontResponse.arrayBuffer();
+                        const timesFont = await pdfDoc.embedFont(fontArrayBuffer);
+
+                        // Tambahkan teks ke halaman pertama
+                        const pages = pdfDoc.getPages();
+                        const firstPage = pages[0];
+                        const nama = "<?php echo htmlspecialchars($nama_mahasiswa, ENT_QUOTES, 'UTF-8'); ?>";
+                        const nim = "<?php echo htmlspecialchars($nim, ENT_QUOTES, 'UTF-8'); ?>";
+                        const jurusan = "<?php echo htmlspecialchars($jurusan, ENT_QUOTES, 'UTF-8'); ?>";
+                        const prodi = "<?php echo htmlspecialchars($prodi, ENT_QUOTES, 'UTF-8'); ?>";
+                        const nomor_surat = "<?php echo htmlspecialchars($nomor_surat, ENT_QUOTES, 'UTF-8'); ?>";
+                        const tanggal = "<?php echo htmlspecialchars($tanggalString, ENT_QUOTES, 'UTF-8'); ?>";
+                        const tahun = "<?php echo htmlspecialchars($tahun, ENT_QUOTES, 'UTF-8'); ?>";
+
+                        firstPage.drawText(`${nama}`, {
+                            x: 225,
+                            y: 618.6,
+                            size: 12,
+                            font: timesFont,
+                            color: rgb(0, 0, 0)
+                        });
+                        firstPage.drawText(`${nim}`, {
+                            x: 225,
+                            y: 602.6,
+                            size: 12,
+                            font: timesFont,
+                            color: rgb(0, 0, 0)
+                        });
+                        firstPage.drawText(`${jurusan}`, {
+                            x: 225,
+                            y: 586.6,
+                            size: 12,
+                            font: timesFont,
+                            color: rgb(0, 0, 0)
+                        });
+                        firstPage.drawText(`${prodi}`, {
+                            x: 225,
+                            y: 570.6,
+                            size: 12,
+                            font: timesFont,
+                            color: rgb(0, 0, 0)
+                        });
+                        firstPage.drawText(`${nomor_surat}/KSB.AK/BT/${tahun}`, {
+                            x: 265,
+                            y: 666,
+                            size: 12,
+                            font: timesFont,
+                            color: rgb(0, 0, 0)
+                        });
+                        firstPage.drawText(`${tanggal}`, {
+                            x: 330,  // Ganti dengan koordinat X yang sesuai
+                            y: 283,  // Ganti dengan koordinat Y yang sesuai
+                            size: 12,
+                            font: timesFont,
+                            color: rgb(0, 0, 0),
+                        });
+
+                        // Simpan PDF baru
+                        const modifiedPdf = await pdfDoc.save();
+                        const blob = new Blob([modifiedPdf], {
+                            type: 'application/pdf'
+                        });
+
+                        // Unduh PDF yang sudah diedit
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `${nim}_Bebas_Tanggungan_Akademik.pdf`;
+                        link.click();
+                    } catch (error) {
+                        console.error('Terjadi error:', error);
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
+
 
 </head>
 
@@ -207,7 +386,24 @@ sqlsrv_close($conn);
                         </div>
                     </div>
 
-                    
+                     <!-- Card Bebas Tanggungan -->
+                     <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Bebas Tanggungan Akademik Pusat</h6>
+                        </div>
+                        <div class="card-body">
+                            <p>Surat ini meliputi Bebas Tanggungan Akademik Pusat.</p>
+                            <?php if ($allConfirmed): ?>
+                                <button class="btn btn-success btn-block" id="downloadButton">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            <?php else: ?>
+                                <button class="btn btn-secondary" disabled><i class="fas fa-download"></i> Disable</button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- /.container-fluid -->
 
@@ -369,13 +565,14 @@ sqlsrv_close($conn);
             })
             .catch(error => console.error('Error loading topbar:', error));
 
+        
         // Ajax untuk mengambil data dan menginisialisasi DataTables
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Memuat data dari data.php
             $.ajax({
                 url: 'data_pusat.php', // File PHP untuk memuat data
                 type: 'GET', // Gunakan metode GET
-                success: function (response) {
+                success: function(response) {
                     // Masukkan data ke dalam tabel
                     $('#table').html(`<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -398,14 +595,14 @@ sqlsrv_close($conn);
                         "info": true // Menampilkan informasi jumlah data
                     });
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('Error:', error);
                 }
             });
         });
 
-        $(document).ready(function () {
-            $('#uploadForm').submit(function (e) {
+        $(document).ready(function() {
+            $('#uploadForm').submit(function(e) {
                 e.preventDefault();
                 var formData = new FormData(this);
 
@@ -415,7 +612,7 @@ sqlsrv_close($conn);
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         // Tutup modal upload
                         $('#uploadModal').modal('hide');
 
@@ -444,7 +641,7 @@ sqlsrv_close($conn);
 
                         loadTableData();
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error('Error:', error);
                     }
                 });
@@ -455,11 +652,11 @@ sqlsrv_close($conn);
             $.ajax({
                 url: 'data_pusat.php', // Endpoint untuk mengambil data tabel
                 type: 'GET',
-                success: function (data) {
+                success: function(data) {
                     // Perbarui isi tabel dengan data yang diterima
                     $('#table tbody').html(data);
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('Error loading table data:', error);
                 }
             });
@@ -475,12 +672,12 @@ sqlsrv_close($conn);
         }
 
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             // Menangani perubahan input file
             const fileInput = document.getElementById("file");
             const fileNameInput = document.getElementById("fileName");
 
-            fileInput.addEventListener("change", function () {
+            fileInput.addEventListener("change", function() {
                 const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
                 fileNameInput.value = fileName;
             });
