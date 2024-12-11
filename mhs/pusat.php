@@ -394,7 +394,7 @@ sqlsrv_close($conn);
                         <div class="card-body">
                             <p>Surat ini meliputi Bebas Tanggungan Akademik Pusat.</p>
                             <?php if ($allConfirmed): ?>
-                                <button class="btn btn-success btn-block" id="downloadButton">
+                                <button class="btn btn-success" id="downloadButton">
                                     <i class="fas fa-download"></i> Download
                                 </button>
                             <?php else: ?>
