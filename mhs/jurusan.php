@@ -50,7 +50,7 @@ if (!$row) {
 // Mengecek apakah semua status sudah terverifikasi
 $allConfirmed = $row['skripsi'] && $row['pkl'] && $row['toeic'] && $row['bebas_kompen'] && $row['publikasi_jurnal'] && $row['program_aplikasi'] && $row['status_skripsi'] && $row['kebenaran_data'];
 
-// Query untuk mengambil data mhs
+// Query untuk mengambil data mahasiswa
 $sql = "SELECT m.nim, m.nama_mhs, m.jurusan_mhs, m.prodi_mhs
         FROM dbo.mahasiswa m
         WHERE m.nim = ?";
@@ -61,9 +61,9 @@ if ($result === false) {
 }
 
 // Ambil data mahasiswa
-$nama_mhs = "";
+$nama_mahasiswa = "";
 if ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-    $nama_mhs = $row['nama_mhs'];
+    $nama_mahasiswa = $row['nama_mhs'];
     $nim = $row['nim'];
     $jurusan = $row['jurusan_mhs'];
     $prodi = $row['prodi_mhs'];
@@ -128,7 +128,6 @@ if ($allConfirmed) {
 
 sqlsrv_close($conn);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -158,6 +157,7 @@ sqlsrv_close($conn);
 
     <!-- DataTables -->
     <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <!-- <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> -->
 
     <!-- DataTables CSS -->
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -169,8 +169,47 @@ sqlsrv_close($conn);
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
 
+
+    <style>
+        .status span {
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .status .badge-success {
+            background-color: #1CC88A;
+        }
+
+        .status .badge-danger {
+            background-color: #F6C23E;
+        }
+
+        #uploadModalHeader.bg-success {
+            background-color: #1CC88A !important;
+        }
+
+        #uploadModalHeader.bg-danger {
+            background-color: #E74A3B !important;
+        }
+
+        #uploadMessage {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-footer .btn-secondary {
+            background-color: #6c757d !important;
+        }
+    </style>
+
     <script type="module">
-        import { PDFDocument, rgb } from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm';
+        import {
+            PDFDocument,
+            rgb
+        } from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm';
 
         document.addEventListener('DOMContentLoaded', () => {
             const button = document.getElementById('downloadButton');
@@ -188,9 +227,9 @@ sqlsrv_close($conn);
                     return "";
                 }
 
-                const username = getCookie('id');  // Ambil cookie 'id' (jika ada)
-                const pdfPath = '../Documents/downloads/generate/Bebas_Tanggungan_Jurusan.pdf';  // Path ke file PDF
-                const fontPath = './TimesNewRoman/TimesNewRoman.ttf';  // Path ke font kustom
+                const username = getCookie('id'); // Ambil cookie 'id' (jika ada)
+                const pdfPath = '../Documents/downloads/generate/Bebas_Tanggungan_Jurusan.pdf'; // Path ke file PDF
+                const fontPath = './TimesNewRoman/TimesNewRoman.ttf'; // Path ke font kustom
 
                 try {
                     // Muat PDF
@@ -199,7 +238,7 @@ sqlsrv_close($conn);
                         console.error('Failed to load PDF:', pdfResponse.statusText);
                         return;
                     }
-                    
+
                     const pdfArrayBuffer = await pdfResponse.arrayBuffer();
                     const pdfDoc = await PDFDocument.load(pdfArrayBuffer);
 
@@ -216,12 +255,12 @@ sqlsrv_close($conn);
                         console.error('Failed to load font:', fontResponse.statusText);
                         return;
                     }
-                    
+
                     const fontArrayBuffer = await fontResponse.arrayBuffer();
                     const timesFont = await pdfDoc.embedFont(fontArrayBuffer);
 
                     // Ambil data dari PHP untuk dimasukkan ke PDF
-                    const nama = "<?php echo htmlspecialchars($nama_mhs, ENT_QUOTES, 'UTF-8'); ?>";
+                    const nama = "<?php echo htmlspecialchars($nama_mahasiswa, ENT_QUOTES, 'UTF-8'); ?>";
                     const nim = "<?php echo htmlspecialchars($nim, ENT_QUOTES, 'UTF-8'); ?>";
                     const prodi = "<?php echo htmlspecialchars($prodi, ENT_QUOTES, 'UTF-8'); ?>";
                     const tanggalProdi = "<?php echo htmlspecialchars($tanggalProdi, ENT_QUOTES, 'UTF-8'); ?>";
@@ -239,40 +278,40 @@ sqlsrv_close($conn);
 
                     // Tentukan posisi teks untuk setiap field
                     firstPage.drawText(`${nama}`, {
-                        x: 190,  // Koordinat X
-                        y: 626,  // Koordinat Y
+                        x: 190, // Koordinat X
+                        y: 626, // Koordinat Y
                         size: 12,
                         font: timesFont,
                         color: rgb(0, 0, 0),
                     });
 
                     firstPage.drawText(`${nim}`, {
-                        x: 190,  // Koordinat X
-                        y: 605,  // Koordinat Y
+                        x: 190, // Koordinat X
+                        y: 605, // Koordinat Y
                         size: 12,
                         font: timesFont,
                         color: rgb(0, 0, 0),
                     });
 
                     firstPage.drawText(`${prodi}`, {
-                        x: 190,  // Koordinat X
-                        y: 584,  // Koordinat Y
+                        x: 190, // Koordinat X
+                        y: 584, // Koordinat Y
                         size: 12,
                         font: timesFont,
                         color: rgb(0, 0, 0),
                     });
 
                     firstPage.drawText(`${tanggalProdi}`, {
-                        x: 296,  // Koordinat X
-                        y: 511,  // Koordinat Y
+                        x: 296, // Koordinat X
+                        y: 511, // Koordinat Y
                         size: 9,
                         font: timesFont,
                         color: rgb(0, 0, 0),
                     });
 
                     firstPage.drawText(`${tanggalJurusan}`, {
-                        x: 296,  // Koordinat X
-                        y: 413,  // Koordinat Y
+                        x: 296, // Koordinat X
+                        y: 413, // Koordinat Y
                         size: 9,
                         font: timesFont,
                         color: rgb(0, 0, 0),
@@ -280,8 +319,8 @@ sqlsrv_close($conn);
 
                     // TTD penanggung Jawab (Ketua Prodi)
                     firstPage.drawText(`${tanggalJurusan}`, {
-                        x: 462,  // Koordinat X
-                        y: 474,  // Koordinat Y
+                        x: 462, // Koordinat X
+                        y: 474, // Koordinat Y
                         size: 9,
                         font: timesFont,
                         color: rgb(0, 0, 0),
@@ -289,8 +328,8 @@ sqlsrv_close($conn);
 
                     // TTD Ketua Jurusan
                     firstPage.drawText(`${tanggalJurusan}`, {
-                        x: 332,  // Koordinat X
-                        y: 298,  // Koordinat Y
+                        x: 332, // Koordinat X
+                        y: 298, // Koordinat Y
                         size: 12,
                         font: timesFont,
                         color: rgb(0, 0, 0),
@@ -298,7 +337,9 @@ sqlsrv_close($conn);
 
                     // Unduh PDF yang telah dimodifikasi
                     const pdfBytes = await pdfDoc.save();
-                    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                    const blob = new Blob([pdfBytes], {
+                        type: 'application/pdf'
+                    });
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(blob);
                     link.download = `${nim}_Bebas_Tanggungan_Jurusan.pdf`;
@@ -311,36 +352,6 @@ sqlsrv_close($conn);
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@0.0.4/dist/fontkit.umd.min.js"></script>
-
-    <style>
-        .status span {
-            padding: 5px 10px;
-            border-radius: 15px;
-            color: white;
-            font-weight: bold;
-        }
-
-        #uploadModalHeader.bg-success {
-            background-color: #1cc88a !important;
-            /* Hijau terang */
-        }
-
-        #uploadModalHeader.bg-danger {
-            background-color: #e74a3b !important;
-            /* Merah terang */
-        }
-
-        #uploadMessage {
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .modal-footer .btn-secondary {
-            background-color: #6c757d !important;
-            /* Abu-abu lebih terang */
-        }
-    </style>
 
 </head>
 
@@ -366,35 +377,40 @@ sqlsrv_close($conn);
                 <div id="topbar"></div>
 
                 <!-- End of Topbar -->
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800"></h1>
-                    </div>
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800"></h1>
+                </div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Verifikasi Berkas</h1>
-                    <p class="mb-4">Verifikasi berkas pada jurusan (lantai 6) yang akan diverifikasi oleh ibu Ila (<a
-                            target="_blank" href="https://wa.me/6281232245969">081232245969</a> - <i>Chat Only</i>) </p>
+                    <h1 class="h3 mb-2 text-gray-800"></h1>
+
 
                     <!-- DataTables Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Berkas Yang Perlu Diunggah</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Prosess</h6>
                         </div>
                         <div class="card-body">
+
                             <div class="table-responsive">
+
                                 <div id="table"></div>
+
                             </div>
                         </div>
                     </div>
-
                     <!-- Card Download Dokumen -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Download Dokumen</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Download Template Dokumen</h6>
                         </div>
                         <div class="card-body">
+                            <p>Unduh template dokumen yang disediakan (sesuaikan dengan kebutuhan verifikasi), isi
+                                sesuai petunjuk, lalu unggah untuk
+                                proses verifikasi.</p>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dokumenTable">
                                     <thead>
@@ -420,8 +436,8 @@ sqlsrv_close($conn);
                         </div>
                     </div>
 
-                    <!-- Card Bebas Tanggungan -->
-                    <div class="card shadow mb-4">
+                  <!-- Card Bebas Tanggungan -->
+                  <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Bebas Tanggungan Jurusan</h6>
                         </div>
@@ -514,7 +530,7 @@ sqlsrv_close($conn);
                                 <input type="file" class="form-control-file d-none" id="file" name="file" required
                                     onchange="updateFileName()">
                             </div>
-                            <small class="form-text text-muted">Accepted file type: .doc only</small>
+                            <small class="form-text text-muted">Accepted file type: pdf only (rar/zip for program_aplikasi)</small>
                         </div>
 
                         <!-- Preview Filename -->
@@ -556,6 +572,9 @@ sqlsrv_close($conn);
         </div>
     </div>
 
+
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -568,189 +587,178 @@ sqlsrv_close($conn);
 
     <!-- Page level plugins -->
     <script src="../vendor/chart.js/Chart.min.js"></script>
+    <!--<script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
+
 
     <!-- Page level custom scripts -->
     <script src="../js/demo/chart-area-demo.js"></script>
     <script src="../js/demo/chart-pie-demo.js"></script>
-
+    <!-- <script src="../js/demo/datatables-demo.js"></script> -->
     <script>
-
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('navbar.html')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('navbar').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading navbar:', error));
-        });
-
-        fetch('topbar.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('topbar').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading topbar:', error));
-
-        // Ajax untuk mengambil data dan menginisialisasi DataTables
-        $(document).ready(function () {
-            // Memuat data dari data.php
-            $.ajax({
-                url: 'data_jurusan.php', // File PHP untuk memuat data
-                type: 'GET', // Gunakan metode GET
-                success: function (response) {
-                    // Masukkan data ke dalam tabel
-                    $('#table').html(`<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Berkas</th>
-                        <th>Status Pengumpulan</th>
-                        <th>Keterangan</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>${response}</tbody>
-            </table>`);
-
-                    // Inisialisasi DataTables setelah data dimasukkan
-                    $('#dataTable').DataTable({
-                        "paging": true, // Menampilkan pagination
-                        "searching": true, // Menambahkan fitur pencarian
-                        "ordering": true, // Menambahkan fitur sorting
-                        "info": true // Menampilkan informasi jumlah data
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
-
-        $(document).ready(function () {
-            $('#uploadForm').submit(function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url: 'upload.php',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        // Tutup modal upload
-                        $('#uploadModal').modal('hide');
-
-                        // Tampilkan ikon dan teks berdasarkan respons
-                        if (response.includes("berhasil")) {
-                            $('#successIcon').show();
-                            $('#errorIcon').hide();
-                            $('#uploadModalHeader')
-                                .removeClass('bg-danger')
-                                .addClass('bg-success text-white');
-                            $('#uploadMessage').css('color', '#155724'); // Hijau tua untuk teks
-                        } else {
-                            $('#successIcon').hide();
-                            $('#errorIcon').show();
-                            $('#uploadModalHeader')
-                                .removeClass('bg-success')
-                                .addClass('bg-danger text-white');
-                            $('#uploadMessage').css('color', '#721c24'); // Merah tua untuk teks
+            // Fungsi untuk memuat elemen navbar dan topbar
+            function loadNavbarAndTopbar() {
+                fetch('navbar.html')
+                    .then(response => {
+                        console.log('Navbar fetch status:', response.status);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
+                        return response.text();
+                    })
+                    .then(data => {
+                        document.getElementById('navbar').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error loading navbar:', error));
 
-                        // Tampilkan respons
-                        $('#uploadMessage').html(response);
+                fetch('topbar.html')
+                    .then(response => {
+                        console.log('Topbar fetch status:', response.status);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        document.getElementById('topbar').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error loading topbar:', error));
+            }
 
-                        // Tampilkan modal status
-                        $('#uploadModalStatus').modal('show');
+            // Fungsi untuk memuat data tabel dan menginisialisasi DataTables
+            function loadTableData() {
+                $.ajax({
+                    url: 'data_jurusan.php', // Endpoint untuk mengambil data tabel
+                    type: 'GET',
+                    success: function(response) {
+                        $('#table').html(`
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Berkas</th>
+                            <th>Status Pengumpulan</th>
+                            <th>Keterangan</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>${response}</tbody>
+                </table>
+            `);
 
-                        loadTableData();
+                        // Inisialisasi DataTables setelah data dimasukkan
+                        $('#dataTable').DataTable({
+                            paging: true,
+                            searching: true,
+                            ordering: true,
+                            info: true
+                        });
                     },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', error);
+                    error: function(xhr, status, error) {
+                        console.error('Error loading table data:', error);
                     }
                 });
-            });
-        });
+            }
 
-        function loadTableData() {
-            $.ajax({
-                url: 'data_jurusan.php', // Endpoint untuk mengambil data tabel
-                type: 'GET',
-                success: function (data) {
-                    // Perbarui isi tabel dengan data yang diterima
-                    $('#table tbody').html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error loading table data:', error);
-                }
-            });
-        }
+            // Fungsi untuk menangani form upload
+            function handleUploadForm() {
+                $('#uploadForm').submit(function(e) {
+                    e.preventDefault();
+                    var formData = new FormData(this);
 
-        function setUploadDir(directory) {
-            $('#uploadDir').val(directory);
-        }
+                    $.ajax({
+                        url: 'upload.php',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            $('#uploadModal').modal('hide');
 
-        function updateFileName() {
-            var fileName = document.getElementById('file').files[0]?.name || "No file chosen";
-            document.getElementById('fileName').value = fileName;
-        }
+                            if (response.includes("berhasil")) {
+                                $('#successIcon').show();
+                                $('#errorIcon').hide();
+                                $('#uploadModalHeader')
+                                    .removeClass('bg-danger')
+                                    .addClass('bg-success text-white');
+                                $('#uploadMessage').css('color', '#155724');
+                            } else {
+                                $('#successIcon').hide();
+                                $('#errorIcon').show();
+                                $('#uploadModalHeader')
+                                    .removeClass('bg-success')
+                                    .addClass('bg-danger text-white');
+                                $('#uploadMessage').css('color', '#721c24');
+                            }
 
+                            $('#uploadMessage').html(response);
+                            $('#uploadModalStatus').modal('show');
+                            loadTableData();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error uploading file:', error);
+                        }
+                    });
+                });
+            }
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Menangani perubahan input file
-            const fileInput = document.getElementById("file");
-            const fileNameInput = document.getElementById("fileName");
+            // Fungsi untuk mengatur direktori upload
+            function setUploadDir(directory) {
+                $('#uploadDir').val(directory);
+            }
 
-            fileInput.addEventListener("change", function () {
-                const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
-                fileNameInput.value = fileName;
-            });
-        });
+            // Fungsi untuk memperbarui nama file yang diunggah
+            function updateFileName() {
+                const fileInput = document.getElementById('file');
+                const fileNameInput = document.getElementById('fileName');
 
+                fileInput.addEventListener('change', function() {
+                    const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
+                    fileNameInput.value = fileName;
+                });
+            }
 
-        // Keterangan pada verifikasi
+            // Fungsi untuk menangani perubahan status verifikasi
+            function handleVerification() {
+                const verifikasiTrue = document.getElementById('verifikasiTrue');
+                const verifikasiFalse = document.getElementById('verifikasiFalse');
+                const keterangan = document.getElementById('keterangan');
+                const keteranganError = document.getElementById('keteranganError');
+                const saveButton = document.getElementById('saveVerification');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const verifikasiTrue = document.getElementById('verifikasiTrue');
-            const verifikasiFalse = document.getElementById('verifikasiFalse');
-            const keterangan = document.getElementById('keterangan');
-            const keteranganError = document.getElementById('keteranganError');
-            const saveButton = document.getElementById('saveVerification');
+                [verifikasiTrue, verifikasiFalse].forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        if (verifikasiTrue.checked) {
+                            keterangan.disabled = true;
+                            keterangan.value = "";
+                            keteranganError.style.display = "none";
+                        } else if (verifikasiFalse.checked) {
+                            keterangan.disabled = false;
+                        }
+                    });
+                });
 
-            // Event listener untuk radio buttons
-            [verifikasiTrue, verifikasiFalse].forEach(radio => {
-                radio.addEventListener('change', () => {
-                    if (verifikasiTrue.checked) {
-                        keterangan.disabled = true;
-                        keterangan.value = ""; // Clear the textarea
+                saveButton.addEventListener('click', () => {
+                    if (verifikasiFalse.checked && keterangan.value.trim() === "") {
+                        keteranganError.style.display = "block";
+                        keterangan.focus();
+                    } else {
                         keteranganError.style.display = "none";
-                    } else if (verifikasiFalse.checked) {
-                        keterangan.disabled = false;
+                        alert('Data berhasil disimpan!');
+                        $('#uploadModal').modal('hide');
                     }
                 });
-            });
+            }
 
-            // Validasi sebelum menyimpan
-            saveButton.addEventListener('click', () => {
-                if (verifikasiFalse.checked && keterangan.value.trim() === "") {
-                    keteranganError.style.display = "block";
-                    keterangan.focus();
-                } else {
-                    keteranganError.style.display = "none";
-                    // Lakukan tindakan simpan (AJAX atau proses lainnya)
-                    alert('Data berhasil disimpan!');
-                    $('#uploadModal').modal('hide');
-                }
+            // Panggil fungsi saat halaman dimuat
+            document.addEventListener('DOMContentLoaded', function() {
+                loadNavbarAndTopbar();
+                loadTableData();
+                handleUploadForm();
+                updateFileName();
+                handleVerification();
             });
-        });
-
-    </script>
+        </script>
 
 </body>
 
