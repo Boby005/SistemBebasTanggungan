@@ -4,7 +4,7 @@ include '../../koneksi.php';
 
 try {
     $sql = " 
-            SELECT nip, nama_adm, no_telp_adm, alamat_adm, tgl_lahir_adm, jenis_kelamin_adm, ttd_adm
+            SELECT nip, nama_adm, no_telp_adm, alamat_adm, tgl_lahir_adm, jenis_kelamin_adm
             FROM dbo.admin a
             WHERE a.nip = ?";
 
@@ -146,15 +146,15 @@ try {
                                                 <span><?= htmlspecialchars($result['nama_adm'] ?? '') ?></span>
                                             </div>
                                             <div class="info-item">
-                                                <strong>NIM (No Induk)</strong>
+                                                <strong>NIMP(No Induk)</strong>
                                                 <span><?= htmlspecialchars($result['nip'] ?? '') ?></span>
                                             </div>
                                             <div class="info-item">
-                                                <strong>Jurusan</strong>
+                                                <strong>Nomor Telepon</strong>
                                                 <span><?= htmlspecialchars($result['no_telp_adm'] ?? '') ?></span>
                                             </div>
                                             <div class="info-item">
-                                                <strong>Program Studi</strong>
+                                                <strong>Alamat</strong>
                                                 <span><?= htmlspecialchars($result['alamat_adm'] ?? '') ?></span>
                                             </div>
                                             <div class="info-item">
@@ -211,6 +211,7 @@ try {
         <i class="fas fa-angle-up"></i>
     </a>
 
+    
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
