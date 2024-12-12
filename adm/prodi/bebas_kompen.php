@@ -204,7 +204,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_bebas_kompen.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/bebas_kompen/<?= $row['nim'] ?>_bebas_kompen.pdf"
+                                                            data-pdf="../../Documents/uploads/bebas_kompen/<?= $row['nim'] ?>_bebas_kompen.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -213,7 +213,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_bebas_kompen.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/bebas_kompen/<?= $row['nim'] ?>_bebas_kompen.pdf"
+                                                            data-pdf="../../Documents/uploads/bebas_kompen/<?= $row['nim'] ?>_bebas_kompen.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
@@ -272,7 +272,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../index.html">Logout</a>
+                    <a class="btn btn-primary" href="../../index.html">Logout</a>
                 </div>
             </div>
         </div>
@@ -499,7 +499,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/bebas_kompen/${nim}_bebas_kompen.pdf`;
+                    const pdfUrl = `../../Documents/uploads/bebas_kompen/${nim}_bebas_kompen.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;

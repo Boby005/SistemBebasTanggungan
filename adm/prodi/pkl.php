@@ -203,8 +203,8 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                         <button class="btn btn-info btn-sm edit-data"
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
-                                                            data-nama-berkas="<?= $row['nim'] . "_pkl.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/pkl/<?= $row['nim'] ?>_pkl.pdf"
+                                                            data-nama-berkas="<?= $row['nim'] . "_serahan_pkl.pdf" ?>"
+                                                            data-pdf="../../Documents/uploads/serahan_pkl/<?= $row['nim'] ?>_serahan_pkl.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -212,8 +212,8 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                         <button class="btn btn-primary btn-sm edit-data"
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
-                                                            data-nama-berkas="<?= $row['nim'] . "_pkl.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/pkl/<?= $row['nim'] ?>_pkl.pdf"
+                                                            data-nama-berkas="<?= $row['nim'] . "_serahan_pkl.pdf" ?>"
+                                                            data-pdf="../../Documents/uploads/serahan_pkl/<?= $row['nim'] ?>_serahan_pkl.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
@@ -499,11 +499,11 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/pkl/${nim}_pkl.pdf`;
+                    const pdfUrl = `../../Documents/uploads/serahan_pkl/${nim}_serahan_pkl.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;
-                    document.getElementById('namaBerkas').value = `${nim}_pkl.pdf`;
+                    document.getElementById('namaBerkas').value = `${nim}_serahan_pkl.pdf`;
                     document.getElementById('pdfPreview').setAttribute('src', pdfUrl); // Update src iframe
                 });
             });

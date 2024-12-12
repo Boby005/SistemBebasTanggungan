@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $statusVerifikasi = $_POST['status_verifikasi'];
 
-    // Validasi keterangan jika status verifikasi 'tidak_terverifikasi'
+    // Validasi keterangan jika status verifikasi 'ditolak'
     if ($statusVerifikasi === 'ditolak' && ($_POST['keterangan'] === '' || !isset($_POST['keterangan']))) {
         echo json_encode(['success' => false, 'error' => 'Keterangan wajib diisi jika status verifikasi ditolak.']);
         exit();
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt2 = sqlsrv_query($conn, $sqlTanggal, $params2);
 
-    if ($stmt&&$stmt2) {
+    if ($stmt && $stmt2) {
         header("Location: ../bebas_kompen.php?message=Status+berhasil+diperbarui!&type=success");
         exit();
     } else {

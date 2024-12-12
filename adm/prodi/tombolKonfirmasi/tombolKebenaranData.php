@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt2 = sqlsrv_query($conn, $sqlTanggal, $params2);
 
     if ($stmt&&$stmt2) {
-        header("Location: ../kebenarandata.php?message=Status+berhasil+diperbarui!&type=success");
+        header("Location: ../kebenaran_data.php?message=Status+berhasil+diperbarui!&type=success");
         exit();
     } else {
         // Cek apakah ada error dari SQL Server

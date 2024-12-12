@@ -132,7 +132,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="container-fluid">
                     <p></p>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">DATA Serahan Skripsi</h1>
+                    <h1 class="h3 mb-2 text-gray-800">DATA SERAHAN SKRIPSI</h1>
                     <p class="mb-4">Konfirmasi Data Mahasiswa dengan seksama!</p>
 
                     <!-- DataTables Example -->
@@ -204,7 +204,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_serahan_skripsi.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/serahan_skripsi/<?= $row['nim'] ?>_serahan_skripsi.pdf"
+                                                            data-pdf="../../Documents/uploads/serahan_skripsi/<?= $row['nim'] ?>_serahan_skripsi.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -213,7 +213,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_serahan_skripsi.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/serahan_skripsi/<?= $row['nim'] ?>_serahan_skripsi.pdf"
+                                                            data-pdf="../../Documents/uploads/serahan_skripsi/<?= $row['nim'] ?>_serahan_skripsi.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
@@ -272,7 +272,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../index.html">Logout</a>
+                    <a class="btn btn-primary" href="../../index.html">Logout</a>
                 </div>
             </div>
         </div>
@@ -499,7 +499,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/serahan_skripsi/${nim}_serahan_skripsi.pdf`;
+                    const pdfUrl = `../../Documents/uploads/serahan_skripsi/${nim}_serahan_skripsi.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;

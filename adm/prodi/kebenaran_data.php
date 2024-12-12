@@ -132,7 +132,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="container-fluid">
                     <p></p>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">DATA kebenaran_data</h1>
+                    <h1 class="h3 mb-2 text-gray-800">DATA KEBENARAN DATA</h1>
                     <p class="mb-4">Konfirmasi Data Mahasiswa dengan seksama!</p>
 
                     <!-- DataTables Example -->
@@ -204,7 +204,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_kebenaran_data.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/kebenaran_data/<?= $row['nim'] ?>_kebenaran_data.pdf"
+                                                            data-pdf="../../Documents/uploads/kebenaran_data/<?= $row['nim'] ?>_kebenaran_data.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -213,7 +213,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_kebenaran_data.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/kebenaran_data/<?= $row['nim'] ?>_kebenaran_data.pdf"
+                                                            data-pdf="../../Documents/uploads/kebenaran_data/<?= $row['nim'] ?>_kebenaran_data.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
@@ -272,7 +272,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../index.html">Logout</a>
+                    <a class="btn btn-primary" href="../../index.html">Logout</a>
                 </div>
             </div>
         </div>
@@ -325,7 +325,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                     <div class="card">
                         <div class="card-body">
                             <h6><strong>Status Verifikasi:</strong></h6>
-                            <form id="verifikasiForm" action="tombolKonfirmasi/tombol.php" method="POST">
+                            <form id="verifikasiForm" action="tombolKonfirmasi/tombolKebenaranData.php" method="POST">
                                 <div class="form-group">
                                     <label>
                                         <input type="radio" id="terverifikasi" name="status_verifikasi"
@@ -499,7 +499,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/kebenaran_data/${nim}_kebenaran_data.pdf`;
+                    const pdfUrl = `../../Documents/uploads/kebenaran_data/${nim}_kebenaran_data.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;

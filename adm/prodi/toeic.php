@@ -204,7 +204,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_toeic.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/toeic/<?= $row['nim'] ?>_toeic.pdf"
+                                                            data-pdf="../../Documents/uploads/toeic/<?= $row['nim'] ?>_toeic.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-solid fa-file-lines"></i> Preview
                                                         </button>
@@ -213,7 +213,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
                                                             data-nama-berkas="<?= $row['nim'] . "_toeic.pdf" ?>"
-                                                            data-pdf="../Documents/uploads/toeic/<?= $row['nim'] ?>_toeic.pdf"
+                                                            data-pdf="../../Documents/uploads/toeic/<?= $row['nim'] ?>_toeic.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
@@ -499,7 +499,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/toeic/${nim}_toeic.pdf`;
+                    const pdfUrl = `../../Documents/uploads/toeic/${nim}_toeic.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;
