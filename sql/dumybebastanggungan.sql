@@ -3,10 +3,10 @@ use bebastanggungan;
 INSERT INTO admin
     (id_adm, nip, nama_adm, no_telp_adm, alamat_adm, tgl_lahir_adm, jenis_kelamin_adm)
 VALUES
-('1','20230006', 'Safrilia', '081333213023', 'Jl. Merdeka No. 1, Jakarta', '1990-05-15', 'P'),
-('2','20230007', 'Merry', '082247723596', 'Jl. Pahlawan No. 22, Bandung', '1988-12-20', 'P'),
-('3','20230008', 'Ila', '081232245969', 'Jl. Mawar No. 10, Surabaya', '1992-08-11', 'P'),
-('4','20230009', 'Widya Novy', '082232867789', 'Jl. Kenangan No. 5, Yogyakarta', '1995-03-25', 'P');
+('1','20000001', 'Safrilia', '081333213023', 'Jl. Merdeka No. 1, Jakarta', '1990-05-15', 'P'),
+('2','20000002', 'Merry', '082247723596', 'Jl. Pahlawan No. 22, Bandung', '1988-12-20', 'P'),
+('3','20000003', 'Ila', '081232245969', 'Jl. Mawar No. 10, Surabaya', '1992-08-11', 'P'),
+('4','20000004', 'Widya Novy', '082232867789', 'Jl. Kenangan No. 5, Yogyakarta', '1995-03-25', 'P');
 
 
 -- Dummy Data Mahasiswa
