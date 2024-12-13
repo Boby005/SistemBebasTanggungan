@@ -27,13 +27,18 @@ VALUES
     ('2341760086', 'Isnaeny Tri Larasati', '085826195940', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02'),
     ('2341760101', 'Fransiska Widya Krisanti', '082138069699', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02');
 select * from mahasiswa;
+
 INSERT INTO login (username, password, [position])
 VALUES
 ('2341760162', '2341760162', 'mahasiswa'),
 ('2351760163', '2351760163', 'mahasiswa'),
 ('2361760164', '2361760164', 'mahasiswa'),
 ('2024000001', '2024000001', 'mahasiswa'),
-('2024000002', '2024000002', 'mahasiswa');
+('2024000002', '2024000002', 'mahasiswa'),
+('2341760098', '2341760098', 'mahasiswa'),
+('2341760036', '2341760036', 'mahasiswa'),
+('2341760086', '2341760086', 'mahasiswa'),
+('2341760101', '2341760101', 'mahasiswa');
 
 --pusat
 
