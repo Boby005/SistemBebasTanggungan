@@ -7,8 +7,6 @@ VALUES
 ('2','20000001', 'Merry', '082247723596', 'Jl. Pahlawan No. 22, Bandung', '1988-12-20', 'P'),
 ('3','20000003', 'Ila', '081232245969', 'Jl. Mawar No. 10, Surabaya', '1992-08-11', 'P'),
 ('4','20000002', 'Widya Novy', '082232867789', 'Jl. Kenangan No. 5, Yogyakarta', '1995-03-25', 'P');
-
-
 -- Dummy Data Mahasiswa
 
 
@@ -28,13 +26,18 @@ VALUES
     ('2341760101', 'Fransiska Widya Krisanti', '082138069699', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02');
 
 select * from mahasiswa;
+
 INSERT INTO login (username, password, [position])
 VALUES
 ('2341760162', '2341760162', 'mahasiswa'),
 ('2351760163', '2351760163', 'mahasiswa'),
 ('2361760164', '2361760164', 'mahasiswa'),
 ('2024000001', '2024000001', 'mahasiswa'),
-('2024000002', '2024000002', 'mahasiswa');
+('2024000002', '2024000002', 'mahasiswa'),
+('2341760098', '2341760098', 'mahasiswa'),
+('2341760036', '2341760036', 'mahasiswa'),
+('2341760086', '2341760086', 'mahasiswa'),
+('2341760101', '2341760101', 'mahasiswa');
 
 --pusat
 
