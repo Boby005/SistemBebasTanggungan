@@ -10,79 +10,79 @@ if (!isset($_COOKIE['id'])) {
 $nim = $_COOKIE['id'];
 
 // Query untuk total terverifikasi
-$query_terverifikasi = "
-SELECT SUM(total_terverifikasi) AS total_terverifikasi
-FROM (
-    SELECT COUNT(*) AS total_terverifikasi FROM skkm WHERE status_pengumpulan_skkm = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM foto_ijazah WHERE status_pengumpulan_foto_ijazah = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM ukt WHERE status_pengumpulan_ukt = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM data_alumni WHERE status_pengumpulan_data_alumni = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM ta_softcopy WHERE status_pengumpulan_ta_softcopy = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM serahan_hardcopy WHERE status_pengumpulan_serahan_hardcopy = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM hasil_quesioner WHERE status_pengumpulan_hasil_quesioner = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM bebas_pinjam_perpustakaan WHERE status_pengumpulan_bebas_pinjam_perpustakaan = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM bebas_kompen WHERE status_pengumpulan_bebas_kompen = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM kebenaran_data WHERE status_pengumpulan_kebenaran_data = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM serahan_pkl WHERE status_pengumpulan_serahan_pkl = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM serahan_skripsi WHERE status_pengumpulan_serahan_skripsi = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM toeic WHERE status_pengumpulan_toeic = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM program_aplikasi WHERE status_pengumpulan_program_aplikasi = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM skripsi WHERE status_pengumpulan_skripsi = 'terverifikasi'
-    UNION ALL
-    SELECT COUNT(*) AS total_terverifikasi FROM publikasi_jurnal WHERE status_pengumpulan_publikasi_jurnal = 'terverifikasi'
-) AS all_tables;
-";
+// $query_terverifikasi = "
+// SELECT SUM(total_terverifikasi) AS total_terverifikasi
+// FROM (
+//     SELECT COUNT(*) AS total_terverifikasi FROM skkm WHERE status_pengumpulan_skkm = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM foto_ijazah WHERE status_pengumpulan_foto_ijazah = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM ukt WHERE status_pengumpulan_ukt = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM data_alumni WHERE status_pengumpulan_data_alumni = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM ta_softcopy WHERE status_pengumpulan_ta_softcopy = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM serahan_hardcopy WHERE status_pengumpulan_serahan_hardcopy = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM hasil_quesioner WHERE status_pengumpulan_hasil_quesioner = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM bebas_pinjam_perpustakaan WHERE status_pengumpulan_bebas_pinjam_perpustakaan = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM bebas_kompen WHERE status_pengumpulan_bebas_kompen = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM kebenaran_data WHERE status_pengumpulan_kebenaran_data = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM serahan_pkl WHERE status_pengumpulan_serahan_pkl = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM serahan_skripsi WHERE status_pengumpulan_serahan_skripsi = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM toeic WHERE status_pengumpulan_toeic = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM program_aplikasi WHERE status_pengumpulan_program_aplikasi = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM skripsi WHERE status_pengumpulan_skripsi = 'terverifikasi'
+//     UNION ALL
+//     SELECT COUNT(*) AS total_terverifikasi FROM publikasi_jurnal WHERE status_pengumpulan_publikasi_jurnal = 'terverifikasi'
+// ) AS all_tables;
+// ";
 
 
 // Query untuk menghitung status diproses, ditolak, dan kosong untuk pengguna tertentu
 $query_status_user = "
 SELECT SUM(total_status) AS total_status
 FROM (
-    SELECT COUNT(*) AS total_status FROM skkm WHERE nim = ? AND status_pengumpulan_skkm IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM skkm WHERE nim = ? AND status_pengumpulan_skkm IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM foto_ijazah WHERE nim = ? AND status_pengumpulan_foto_ijazah IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM foto_ijazah WHERE nim = ? AND status_pengumpulan_foto_ijazah IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM ukt WHERE nim = ? AND status_pengumpulan_ukt IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM ukt WHERE nim = ? AND status_pengumpulan_ukt IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM data_alumni WHERE nim = ? AND status_pengumpulan_data_alumni IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM data_alumni WHERE nim = ? AND status_pengumpulan_data_alumni IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM ta_softcopy WHERE nim = ? AND status_pengumpulan_ta_softcopy IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM ta_softcopy WHERE nim = ? AND status_pengumpulan_ta_softcopy IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM serahan_hardcopy WHERE nim = ? AND status_pengumpulan_serahan_hardcopy IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM serahan_hardcopy WHERE nim = ? AND status_pengumpulan_serahan_hardcopy IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM hasil_quesioner WHERE nim = ? AND status_pengumpulan_hasil_quesioner IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM hasil_quesioner WHERE nim = ? AND status_pengumpulan_hasil_quesioner IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM bebas_pinjam_perpustakaan WHERE nim = ? AND status_pengumpulan_bebas_pinjam_perpustakaan IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM bebas_pinjam_perpustakaan WHERE nim = ? AND status_pengumpulan_bebas_pinjam_perpustakaan IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM bebas_kompen WHERE nim = ? AND status_pengumpulan_bebas_kompen IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM bebas_kompen WHERE nim = ? AND status_pengumpulan_bebas_kompen IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM kebenaran_data WHERE nim = ? AND status_pengumpulan_kebenaran_data IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM kebenaran_data WHERE nim = ? AND status_pengumpulan_kebenaran_data IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM serahan_pkl WHERE nim = ? AND status_pengumpulan_serahan_pkl IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM serahan_pkl WHERE nim = ? AND status_pengumpulan_serahan_pkl IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM serahan_skripsi WHERE nim = ? AND status_pengumpulan_serahan_skripsi IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM serahan_skripsi WHERE nim = ? AND status_pengumpulan_serahan_skripsi IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM toeic WHERE nim = ? AND status_pengumpulan_toeic IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM toeic WHERE nim = ? AND status_pengumpulan_toeic IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM program_aplikasi WHERE nim = ? AND status_pengumpulan_program_aplikasi IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM program_aplikasi WHERE nim = ? AND status_pengumpulan_program_aplikasi IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM skripsi WHERE nim = ? AND status_pengumpulan_skripsi IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM skripsi WHERE nim = ? AND status_pengumpulan_skripsi IN ('diproses', 'ditolak', 'kosong')
     UNION ALL
-    SELECT COUNT(*) AS total_status FROM publikasi_jurnal WHERE nim = ? AND status_pengumpulan_publikasi_jurnal IN ('diproses', 'ditolak', '')
+    SELECT COUNT(*) AS total_status FROM publikasi_jurnal WHERE nim = ? AND status_pengumpulan_publikasi_jurnal IN ('diproses', 'ditolak', 'kosong')
 ) AS all_tables;
 ";
 
@@ -99,72 +99,79 @@ if ($result_status_user === false) {
 $row_status_user = sqlsrv_fetch_array($result_status_user, SQLSRV_FETCH_ASSOC);
 $total_status = $row_status_user['total_status'];
 
-$result_terverifikasi = sqlsrv_query($conn, $query_terverifikasi);
-if ($result_terverifikasi === false) {
-    die(print_r(sqlsrv_errors(), true)); // Cek error query
-}
+// $result_terverifikasi = sqlsrv_query($conn, $query_terverifikasi);
+// if ($result_terverifikasi === false) {
+//     die(print_r(sqlsrv_errors(), true)); // Cek error query
+// }
 
-$row_terverifikasi = sqlsrv_fetch_array($result_terverifikasi, SQLSRV_FETCH_ASSOC);
-$total_terverifikasi = $row_terverifikasi['total_terverifikasi'];
+// $row_terverifikasi = sqlsrv_fetch_array($result_terverifikasi, SQLSRV_FETCH_ASSOC);
+// $total_terverifikasi = $row_terverifikasi['total_terverifikasi'];
 
 // Query untuk total semua dokumen
 $query_total = "
 SELECT SUM(total_dokumen) AS total_dokumen
 FROM (
-    SELECT COUNT(*) AS total_dokumen FROM skkm
+    SELECT COUNT(*) AS total_dokumen FROM skkm WHERE nim = ? AND status_pengumpulan_skkm = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM foto_ijazah
+    SELECT COUNT(*) AS total_dokumen FROM foto_ijazah WHERE nim = ? AND status_pengumpulan_foto_ijazah = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM ukt
+    SELECT COUNT(*) AS total_dokumen FROM ukt WHERE nim = ? AND status_pengumpulan_ukt = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM data_alumni
+    SELECT COUNT(*) AS total_dokumen FROM data_alumni WHERE nim = ? AND status_pengumpulan_data_alumni = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM ta_softcopy
+    SELECT COUNT(*) AS total_dokumen FROM ta_softcopy WHERE nim = ? AND status_pengumpulan_ta_softcopy = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM serahan_hardcopy
+    SELECT COUNT(*) AS total_dokumen FROM serahan_hardcopy WHERE nim = ? AND status_pengumpulan_serahan_hardcopy = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM hasil_quesioner
+    SELECT COUNT(*) AS total_dokumen FROM hasil_quesioner WHERE nim = ? AND status_pengumpulan_hasil_quesioner = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM bebas_pinjam_perpustakaan
+    SELECT COUNT(*) AS total_dokumen FROM bebas_pinjam_perpustakaan WHERE nim = ? AND status_pengumpulan_bebas_pinjam_perpustakaan = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM bebas_kompen
+    SELECT COUNT(*) AS total_dokumen FROM bebas_kompen WHERE nim = ? AND status_pengumpulan_bebas_kompen = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM kebenaran_data
+    SELECT COUNT(*) AS total_dokumen FROM kebenaran_data WHERE nim = ? AND status_pengumpulan_kebenaran_data = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM serahan_pkl
+    SELECT COUNT(*) AS total_dokumen FROM serahan_pkl WHERE nim = ? AND status_pengumpulan_serahan_pkl = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM serahan_skripsi
+    SELECT COUNT(*) AS total_dokumen FROM serahan_skripsi WHERE nim = ? AND status_pengumpulan_serahan_skripsi = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM toeic
+    SELECT COUNT(*) AS total_dokumen FROM toeic WHERE nim = ? AND status_pengumpulan_toeic = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM program_aplikasi
+    SELECT COUNT(*) AS total_dokumen FROM program_aplikasi WHERE nim = ? AND status_pengumpulan_program_aplikasi = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM skripsi
+    SELECT COUNT(*) AS total_dokumen FROM skripsi WHERE nim = ? AND status_pengumpulan_skripsi = 'terverifikasi'
     UNION ALL
-    SELECT COUNT(*) AS total_dokumen FROM publikasi_jurnal
+    SELECT COUNT(*) AS total_dokumen FROM publikasi_jurnal WHERE nim = ? AND status_pengumpulan_publikasi_jurnal = 'terverifikasi'
 ) AS all_tables;
 ";
 
-$result_total = sqlsrv_query($conn, $query_total);
+// Menyiapkan query untuk eksekusi dengan parameter $nim
+$params = array_fill(0, 16, $nim); // Array untuk mengganti `nim` di semua bagian query
+$result_total = sqlsrv_query($conn, $query_total, $params);
+
 if ($result_total === false) {
     die(print_r(sqlsrv_errors(), true)); // Cek error query
 }
 
 $row_total = sqlsrv_fetch_array($result_total, SQLSRV_FETCH_ASSOC);
-$total_dokumen = $row_total['total_dokumen'];
+$total_terverifikasi = $row_total['total_dokumen'] ?? 0; // Total dokumen yang statusnya terverifikasi
+
+// Total dokumen awal yang tersedia (misalkan dari semua dokumen yang diharapkan)
+$total_dokumen_awal = 16; // Ganti sesuai jumlah dokumen yang tersedia
 
 // Hitung persentase
-if ($total_dokumen > 0) {
-    $percentage = ($total_terverifikasi / $total_dokumen) * 100;
+if ($total_dokumen_awal > 0) {
+    $percentage = ($total_terverifikasi / $total_dokumen_awal) * 100;
+
+    // Pastikan persentase tidak lebih dari 100%
+    if ($percentage > 100) {
+        $percentage = 100;
+    }
 } else {
-    $percentage = 0; // Jika total dokumen 0, set persentase ke 0
+    $percentage = 0; // Jika tidak ada dokumen awal, set persentase ke 0
 }
-
-// Menampilkan hasil (contoh)
-
-
 // Jangan lupa untuk menutup koneksi setelah selesai
-sqlsrv_free_stmt($result_terverifikasi);
+sqlsrv_free_stmt($result_status_user);
 sqlsrv_free_stmt($result_total);
 sqlsrv_close($conn);
 ?>
@@ -245,7 +252,8 @@ sqlsrv_close($conn);
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                    PROSES TERVERIFIKASI</div>
+                                                    PROSES TERVERIFIKASI
+                                                </div>
 
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
@@ -263,9 +271,8 @@ sqlsrv_close($conn);
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             </div>
-
-
                                             <div class="col-auto">
                                                 <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                                             </div>
@@ -299,7 +306,7 @@ sqlsrv_close($conn);
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                     Download Panduan
                                                 </div>
-                                                <div class="h10 mb-0 text-gray-300">sebelum melakukan upload tolong download panduan berikut</div>
+                                                <div class="h10 mb-0 text-gray-300">Alur Bebas Tanggungan</div>
                                             </div>
                                             <div class="col-auto">
                                                 <!-- Wrap the icon with an anchor tag for download functionality -->
