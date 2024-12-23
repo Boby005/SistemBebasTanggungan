@@ -3,10 +3,10 @@ use bebastanggungan;
 INSERT INTO admin
     (id_adm, nip, nama_adm, no_telp_adm, alamat_adm, tgl_lahir_adm, jenis_kelamin_adm)
 VALUES
-('1','20230006', 'Safrilia', '081333213023', 'Jl. Merdeka No. 1, Jakarta', '1990-05-15', 'P'),
-('2','20230007', 'Merry', '082247723596', 'Jl. Pahlawan No. 22, Bandung', '1988-12-20', 'P'),
-('3','20230008', 'Ila', '081232245969', 'Jl. Mawar No. 10, Surabaya', '1992-08-11', 'P'),
-('4','20230009', 'Widya Novy', '082232867789', 'Jl. Kenangan No. 5, Yogyakarta', '1995-03-25', 'P');
+('1','20000004', 'Safrilia', '081333213023', 'Jl. Merdeka No. 1, Jakarta', '1990-05-15', 'P'),
+('2','20000001', 'Merry', '082247723596', 'Jl. Pahlawan No. 22, Bandung', '1988-12-20', 'P'),
+('3','20000003', 'Ila', '081232245969', 'Jl. Mawar No. 10, Surabaya', '1992-08-11', 'P'),
+('4','20000002', 'Widya Novy', '082232867789', 'Jl. Kenangan No. 5, Yogyakarta', '1995-03-25', 'P');
 
 
 -- Dummy Data Mahasiswa
@@ -26,6 +26,7 @@ VALUES
     ('2341760036', 'Ismi Atika', '085259638605', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2005-06-26'),
     ('2341760086', 'Isnaeny Tri Larasati', '085826195940', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02'),
     ('2341760101', 'Fransiska Widya Krisanti', '082138069699', 'Teknologi Informasi', 'Sistem Informasi Bisnis', 'P', '2023', '2004-07-02');
+
 select * from mahasiswa;
 INSERT INTO login (username, password, [position])
 VALUES
@@ -180,7 +181,7 @@ VALUES
 ('ditolak', 'Format salah', '2024000001'),
 ('terverifikasi', 'Jurnal valid', '2024000002');
 
-
+select * from login;
 
 -- TAMBAH ADMIN 
 INSERT into [login] (username, password, position) VALUES(
@@ -224,30 +225,26 @@ VALUES
 ('2351760163', '2024-12-02');
 
 
-select * from toeic;
+select * from admin;
 
-UPDATE ta_softcopy
-SET [status_pengumpulan_ta_softcopy] = 'ditolak'
-where NIM = '2341760162'
-go
 
-UPDATE serahan_pkl
-SET [status_pengumpulan_serahan_pkl] = 'ditolak'
-where NIM = '2341760162'
-go
-
-UPDATE bebas_kompen
-SET [status_pengumpulan_bebas_kompen] = 'ditolak'
+UPDATE serahan_skripsi
+SET [status_pengumpulan_serahan_skripsi] = 'terverifikasi'
 where NIM = '2341760162'
 go
 
 UPDATE toeic
-SET [status_pengumpulan_toeic] = 'ditolak'
+SET [status_pengumpulan_toeic] = 'terverifikasi'
+where NIM = '2341760162'
+go
+
+UPDATE bebas_kompen
+SET [status_pengumpulan_bebas_kompen] = 'terverifikasi'
 where NIM = '2341760162'
 go
 
 UPDATE kebenaran_data
-SET [status_pengumpulan_kebenaran_data] = 'ditolak'
+SET [status_pengumpulan_kebenaran_data] = 'terverifikasi'
 where NIM = '2341760162'
 go
 
@@ -255,6 +252,7 @@ UPDATE bebas_pinjam_perpustakaan
 SET [status_pengumpulan_bebas_pinjam_perpustakaan] = 'terverifikasi'
 where NIM = '2341760162'
 go
+
 UPDATE publikasi_jurnal
 SET [status_pengumpulan_publikasi_jurnal] = 'ditolak'
 where NIM = '2341760162'
