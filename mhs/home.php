@@ -9,45 +9,6 @@ if (!isset($_COOKIE['id'])) {
 
 $nim = $_COOKIE['id'];
 
-// Query untuk total terverifikasi
-// $query_terverifikasi = "
-// SELECT SUM(total_terverifikasi) AS total_terverifikasi
-// FROM (
-//     SELECT COUNT(*) AS total_terverifikasi FROM skkm WHERE status_pengumpulan_skkm = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM foto_ijazah WHERE status_pengumpulan_foto_ijazah = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM ukt WHERE status_pengumpulan_ukt = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM data_alumni WHERE status_pengumpulan_data_alumni = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM ta_softcopy WHERE status_pengumpulan_ta_softcopy = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM serahan_hardcopy WHERE status_pengumpulan_serahan_hardcopy = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM hasil_quesioner WHERE status_pengumpulan_hasil_quesioner = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM bebas_pinjam_perpustakaan WHERE status_pengumpulan_bebas_pinjam_perpustakaan = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM bebas_kompen WHERE status_pengumpulan_bebas_kompen = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM kebenaran_data WHERE status_pengumpulan_kebenaran_data = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM serahan_pkl WHERE status_pengumpulan_serahan_pkl = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM serahan_skripsi WHERE status_pengumpulan_serahan_skripsi = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM toeic WHERE status_pengumpulan_toeic = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM program_aplikasi WHERE status_pengumpulan_program_aplikasi = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM skripsi WHERE status_pengumpulan_skripsi = 'terverifikasi'
-//     UNION ALL
-//     SELECT COUNT(*) AS total_terverifikasi FROM publikasi_jurnal WHERE status_pengumpulan_publikasi_jurnal = 'terverifikasi'
-// ) AS all_tables;
-// ";
-
-
 // Query untuk menghitung status diproses, ditolak, dan kosong untuk pengguna tertentu
 $query_status_user = "
 SELECT SUM(total_status) AS total_status
@@ -99,13 +60,6 @@ if ($result_status_user === false) {
 $row_status_user = sqlsrv_fetch_array($result_status_user, SQLSRV_FETCH_ASSOC);
 $total_status = $row_status_user['total_status'];
 
-// $result_terverifikasi = sqlsrv_query($conn, $query_terverifikasi);
-// if ($result_terverifikasi === false) {
-//     die(print_r(sqlsrv_errors(), true)); // Cek error query
-// }
-
-// $row_terverifikasi = sqlsrv_fetch_array($result_terverifikasi, SQLSRV_FETCH_ASSOC);
-// $total_terverifikasi = $row_terverifikasi['total_terverifikasi'];
 
 // Query untuk total semua dokumen
 $query_total = "
@@ -157,7 +111,7 @@ $row_total = sqlsrv_fetch_array($result_total, SQLSRV_FETCH_ASSOC);
 $total_terverifikasi = $row_total['total_dokumen'] ?? 0; // Total dokumen yang statusnya terverifikasi
 
 // Total dokumen awal yang tersedia (misalkan dari semua dokumen yang diharapkan)
-$total_dokumen_awal = 16; // Ganti sesuai jumlah dokumen yang tersedia
+$total_dokumen_awal = 16; //jumlah dokumen yang tersedia
 
 // Hitung persentase
 if ($total_dokumen_awal > 0) {
@@ -170,9 +124,186 @@ if ($total_dokumen_awal > 0) {
 } else {
     $percentage = 0; // Jika tidak ada dokumen awal, set persentase ke 0
 }
+
+// Query untuk Prodi
+$query_total_prodi = "
+SELECT SUM(total_dokumen) AS total_dokumen_prodi
+FROM (
+    SELECT COUNT(*) AS total_dokumen FROM bebas_kompen WHERE nim = ? AND status_pengumpulan_bebas_kompen = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM kebenaran_data WHERE nim = ? AND status_pengumpulan_kebenaran_data = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM serahan_pkl WHERE nim = ? AND status_pengumpulan_serahan_pkl = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM serahan_skripsi WHERE nim = ? AND status_pengumpulan_serahan_skripsi = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM toeic WHERE nim = ? AND status_pengumpulan_toeic = 'terverifikasi'
+    ) AS all_tables;
+";
+
+// Menyiapkan parameter untuk query
+$params_prodi = array_fill(0, 5, $nim);
+$result_total_prodi = sqlsrv_query($conn, $query_total_prodi, $params_prodi);
+
+if ($result_total_prodi === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+$row_prodi = sqlsrv_fetch_array($result_total_prodi, SQLSRV_FETCH_ASSOC);
+$total_terverifikasi_prodi = $row_prodi['total_dokumen_prodi'] ?? 0;
+
+$total_dokumen_awal_prodi = 5;
+
+// Hitung persentase untuk prodi
+if ($total_dokumen_awal_prodi > 0) {
+    $precentage_prodi = ($total_terverifikasi_prodi / $total_dokumen_awal_prodi) * 100;
+    if ($precentage_prodi > 100) {
+        $precentage_prodi = 100;
+    }
+} else {
+    $precentage_prodi = 0;
+}
+
+// Query untuk Perpustakaan
+$query_total_perpustakaan = "
+SELECT SUM(total_dokumen) AS total_dokumen_perpustakaan
+FROM (
+    SELECT COUNT(*) AS total_dokumen FROM ta_softcopy WHERE nim = ? AND status_pengumpulan_ta_softcopy = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM serahan_hardcopy WHERE nim = ? AND status_pengumpulan_serahan_hardcopy = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM hasil_quesioner WHERE nim = ? AND status_pengumpulan_hasil_quesioner = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM bebas_pinjam_perpustakaan WHERE nim = ? AND status_pengumpulan_bebas_pinjam_perpustakaan = 'terverifikasi'
+    ) AS all_tables;
+";
+
+// Menyiapkan parameter untuk query
+$params_perpustakaan = array_fill(0, 4, $nim);
+$result_total_perpustakaan = sqlsrv_query($conn, $query_total_perpustakaan, $params_perpustakaan);
+
+if ($result_total_perpustakaan === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+$row_perpustakaan = sqlsrv_fetch_array($result_total_perpustakaan, SQLSRV_FETCH_ASSOC);
+$total_terverifikasi_perpustakaan = $row_perpustakaan['total_dokumen_perpustakaan'] ?? 0;
+
+$total_dokumen_awal_perpustakaan = 4;
+
+// Hitung persentase untuk perpustakaan
+if ($total_dokumen_awal_perpustakaan > 0) {
+    $precentage_perpustakaan = ($total_terverifikasi_perpustakaan / $total_dokumen_awal_perpustakaan) * 100;
+    if ($precentage_perpustakaan > 100) {
+        $precentage_perpustakaan = 100;
+    }
+} else {
+    $precentage_perpustakaan = 0;
+}
+
+$query_total_jurusan = "
+SELECT SUM(total_dokumen) AS total_dokumen_jurusan
+FROM (
+SELECT COUNT(*) AS total_dokumen FROM program_aplikasi WHERE nim = ? AND status_pengumpulan_program_aplikasi = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM skripsi WHERE nim = ? AND status_pengumpulan_skripsi = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM publikasi_jurnal WHERE nim = ? AND status_pengumpulan_publikasi_jurnal = 'terverifikasi'
+) AS all_tables;
+";
+
+// Menyiapkan parameter untuk query
+$params_jurusan = array_fill(0, 3, $nim);
+$result_total_jurusan = sqlsrv_query($conn, $query_total_jurusan, $params_jurusan);
+
+if ($result_total_jurusan === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+$row_jurusan = sqlsrv_fetch_array($result_total_jurusan, SQLSRV_FETCH_ASSOC);
+$total_terverifikasi_jurusan = $row_jurusan['total_dokumen_jurusan'] ?? 0;
+
+$total_dokumen_awal_jurusan = 3;
+
+// Hitung persentase untuk jurusan
+if ($total_dokumen_awal_jurusan > 0) {
+    $precentage_jurusan = ($total_terverifikasi_jurusan / $total_dokumen_awal_jurusan) * 100;
+    if ($precentage_jurusan > 100) {
+        $precentage_jurusan = 100;
+    }
+} else {
+    $precentage_jurusan = 0;
+}
+
+
+$query_total_pusat = "
+SELECT SUM(total_dokumen) AS total_dokumen_pusat
+FROM (
+    SELECT COUNT(*) AS total_dokumen FROM skkm WHERE nim = ? AND status_pengumpulan_skkm = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM foto_ijazah WHERE nim = ? AND status_pengumpulan_foto_ijazah = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM ukt WHERE nim = ? AND status_pengumpulan_ukt = 'terverifikasi'
+    UNION ALL
+    SELECT COUNT(*) AS total_dokumen FROM data_alumni WHERE nim = ? AND status_pengumpulan_data_alumni = 'terverifikasi'
+) AS all_tables;
+ ";
+
+// Menyiapkan parameter untuk query
+$params_pusat = array_fill(0, 4, $nim);
+$result_total_pusat = sqlsrv_query($conn, $query_total_pusat, $params_pusat);
+
+if ($result_total_pusat === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+$row_pusat = sqlsrv_fetch_array($result_total_pusat, SQLSRV_FETCH_ASSOC);
+$total_terverifikasi_pusat = $row_pusat['total_dokumen_pusat'] ?? 0;
+
+$total_dokumen_awal_pusat = 4;
+
+// Hitung persentase untuk pusat
+if ($total_dokumen_awal_pusat > 0) {
+    $precentage_pusat = ($total_terverifikasi_pusat / $total_dokumen_awal_pusat) * 100;
+    if ($precentage_pusat > 100) {
+        $precentage_pusat = 100;
+    }
+} else {
+    $precentage_pusat = 0;
+}
+
+
+// Fungsi untuk menentukan kelas progress bar
+function tentukanProgressClass($persentase)
+{
+    if ($persentase >= 80) {
+        return "bg-success"; // Hijau untuk 80% atau lebih
+    } elseif ($persentase >= 30) {
+        return "bg-warning"; // Oranye untuk 30% sampai 79%
+    } else {
+        return "bg-danger"; // Merah untuk kurang dari 30%
+    }
+}
+
+// Tentukan kelas progress bar untuk Prodi
+$progress_class_prodi = tentukanProgressClass($precentage_prodi);
+
+// Tentukan kelas progress bar untuk Perpustakaan
+$progress_class_perpustakaan = tentukanProgressClass($precentage_perpustakaan);
+
+// Tentukan kelas progress bar untuk Jurusan
+$progress_class_jurusan = tentukanProgressClass($precentage_jurusan);
+
+// Tentukan kelas progress bar untuk pusat
+$progress_class_pusat = tentukanProgressClass($precentage_pusat);
+
+
 // Jangan lupa untuk menutup koneksi setelah selesai
 sqlsrv_free_stmt($result_status_user);
 sqlsrv_free_stmt($result_total);
+sqlsrv_free_stmt($result_total_prodi);
+sqlsrv_free_stmt($result_total_jurusan);
+sqlsrv_free_stmt($result_total_pusat);
 sqlsrv_close($conn);
 ?>
 
@@ -258,7 +389,7 @@ sqlsrv_close($conn);
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
                                                         <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                            <?php echo number_format($percentage, 2); ?>%
+                                                            <?php echo number_format($percentage); ?>%
                                                         </div>
                                                     </div>
                                                     <div class="col">
@@ -318,12 +449,6 @@ sqlsrv_close($conn);
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
-
                         </div>
                     </div>
                     <div class="row">
@@ -337,31 +462,66 @@ sqlsrv_close($conn);
                                 </div>
                                 <div class="card-body">
                                     <!-- Progress Bar for Prodi -->
-                                    <h4 class="small font-weight-bold">Prodi <span class="float-right" id="prodi-progress-text">0%</span></h4>
+                                    <h4 class="small font-weight-bold">
+                                        Prodi <span class="float-right" id="prodi-progress-text"><?php echo round($precentage_prodi); ?>%</span>
+                                    </h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" id="prodi-progress-bar" style="width: 0%"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div
+                                            class="progress-bar <?php echo $progress_class_prodi; ?>"
+                                            role="progressbar"
+                                            id="prodi-progress-bar"
+                                            style="width: <?php echo round($precentage_prodi); ?>%"
+                                            aria-valuenow="<?php echo round($precentage_prodi); ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
                                     </div>
 
                                     <!-- Progress Bar for Perpustakaan -->
-                                    <h4 class="small font-weight-bold">Perpustakaan <span class="float-right" id="perpus-progress-text">0%</span></h4>
+                                    <h4 class="small font-weight-bold">
+                                        Perpustakaan <span class="float-right" id="perpus-progress-text"><?php echo round($precentage_perpustakaan); ?>%</span>
+                                    </h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" id="perpus-progress-bar" style="width: 0%"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div
+                                            class="progress-bar <?php echo $progress_class_perpustakaan; ?>"
+                                            role="progressbar"
+                                            id="perpus-progress-bar"
+                                            style="width: <?php echo round($precentage_perpustakaan); ?>%"
+                                            aria-valuenow="<?php echo round($precentage_perpustakaan); ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
                                     </div>
 
                                     <!-- Progress Bar for Jurusan -->
-                                    <h4 class="small font-weight-bold">Jurusan <span class="float-right" id="jurusan-progress-text">0%</span></h4>
+                                    <h4 class="small font-weight-bold">
+                                        Jurusan <span class="float-right" id="jurusan-progress-text"><?php echo round($precentage_jurusan); ?>%</span>
+                                    </h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" id="jurusan-progress-bar" style="width: 0%"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div
+                                            class="progress-bar <?php echo $progress_class_jurusan; ?>"
+                                            role="progressbar"
+                                            id="jurusan-progress-bar"
+                                            style="width: <?php echo round($precentage_jurusan); ?>%"
+                                            aria-valuenow="<?php echo round($precentage_jurusan); ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
                                     </div>
 
                                     <!-- Progress Bar for Pusat -->
-                                    <h4 class="small font-weight-bold">Pusat <span class="float-right" id="pusat-progress-text">0%</span></h4>
+                                    <h4 class="small font-weight-bold">
+                                        Pusat <span class="float-right" id="pusat-progress-text"><?php echo round($precentage_pusat); ?>%</span>
+                                    </h4>
                                     <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" role="progressbar" id="pusat-progress-bar" style="width: 0%"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar <?php echo $progress_class_pusat; ?>"
+                                            role="progressbar"
+                                            id="pusat-progress-bar"
+                                            style="width: <?php echo round($precentage_pusat); ?>%"
+                                            aria-valuenow="<?php echo round($precentage_pusat); ?>"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
