@@ -132,7 +132,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="container-fluid">
                     <p></p>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">DATA PUBLIKASI JURNAL</h1>
+                    <h1 class="h3 mb-2 text-gray-800">DATA PROGRAM APLIKASI</h1>
                     <p class="mb-4">Konfirmasi Data Mahasiswa dengan seksama!</p>
 
                     <!-- DataTables Example -->

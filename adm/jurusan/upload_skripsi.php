@@ -132,7 +132,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="container-fluid">
                     <p></p>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">PUBLIKASI JURNAL</h1>
+                    <h1 class="h3 mb-2 text-gray-800">DATA UPLOAD SKRIPSI</h1>
                     <p class="mb-4">Konfirmasi Data Mahasiswa dengan seksama!</p>
 
                     <!-- DataTables Example -->
@@ -206,7 +206,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nama-berkas="<?= $row['nim'] . "_skripsi.pdf" ?>"
                                                             data-pdf="../Documents/uploads/skripsi/<?= $row['nim'] ?>_skripsi.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
-                                                            <i class="fa fa-solid fa-file-lines"></i> Preview
+                                                            <i class="fa fa-solid fa-file-lines"></i> Edit
                                                         </button>
                                                     <?php else: ?>
                                                         <button class="btn btn-primary btn-sm edit-data"
@@ -499,7 +499,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/skripsi/${nim}_skripsi.pdf`;
+                    const pdfUrl = `../../Documents/uploads/skripsi/${nim}_skripsi.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;
