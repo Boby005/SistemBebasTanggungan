@@ -132,7 +132,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="container-fluid">
                     <p></p>
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">DATA PROGRAM APLIKASI</h1>
+                    <h1 class="h3 mb-2 text-gray-800">DATA PUBLIKASI JURNAL</h1>
                     <p class="mb-4">Konfirmasi Data Mahasiswa dengan seksama!</p>
 
                     <!-- DataTables Example -->
@@ -203,17 +203,17 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                         <button class="btn btn-info btn-sm edit-data"
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
-                                                            data-nama-berkas="<?= $row['nim'] . "_program_aplikasi.zip" ?>"
-                                                            data-pdf="../Documents/uploads/program_aplikasi/<?= $row['nim'] ?>_program_aplikasi.zip"
+                                                            data-nama-berkas="<?= $row['nim'] . "_program_aplikasi.pdf" ?>"
+                                                            data-pdf="../Documents/uploads/program_aplikasi/<?= $row['nim'] ?>_program_aplikasi.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
-                                                            <i class="fa fa-solid fa-file-lines"></i> Preview
+                                                            <i class="fa fa-solid fa-file-lines"></i> Edit
                                                         </button>
                                                     <?php else: ?>
                                                         <button class="btn btn-primary btn-sm edit-data"
                                                             data-nim="<?= htmlspecialchars($row['nim']) ?>"
                                                             data-nama="<?= htmlspecialchars($row['nama_mhs']) ?>"
-                                                            data-nama-berkas="<?= $row['nim'] . "_program_aplikasi.zip" ?>"
-                                                            data-pdf="../Documents/uploads/program_aplikasi/<?= $row['nim'] ?>_program_aplikasi.zip"
+                                                            data-nama-berkas="<?= $row['nim'] . "_program_aplikasi.pdf" ?>"
+                                                            data-pdf="../Documents/uploads/program_aplikasi/<?= $row['nim'] ?>_program_aplikasi.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
                                                             <i class="fa fa-edit"></i> Verifikasi
                                                         </button>
@@ -325,7 +325,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                     <div class="card">
                         <div class="card-body">
                             <h6><strong>Status Verifikasi:</strong></h6>
-                            <form id="verifikasiForm" action="tombolKonfirmasi/tombolprogram_aplikasi.php" method="POST">
+                            <form id="verifikasiForm" action="tombolKonfirmasi/tombolProgramA.php" method="POST">
                                 <div class="form-group">
                                     <label>
                                         <input type="radio" id="terverifikasi" name="status_verifikasi"
@@ -499,11 +499,11 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
             buttons.forEach(button => {
                 button.addEventListener("click", function() {
                     const nim = this.getAttribute("data-nim");
-                    const pdfUrl = `../Documents/uploads/program_aplikasi/${nim}_program_aplikasi.zip`;
+                    const pdfUrl = `../../Documents/uploads/program_aplikasi/${nim}_program_aplikasi.pdf`;
 
                     // Update isi modal
                     document.getElementById('nim').value = nim;
-                    document.getElementById('namaBerkas').value = `${nim}_program_aplikasi.zip`;
+                    document.getElementById('namaBerkas').value = `${nim}_program_aplikasi.pdf`;
                     document.getElementById('pdfPreview').setAttribute('src', pdfUrl); // Update src iframe
                 });
             });
