@@ -35,7 +35,7 @@ body {
     max-width: 100%;
 }
 .login-instructions {
-    color: #3D46EA;
+    color: white;
     text-align: center;
     margin-top: 79px;
     font: 200 15px Inter, sans-serif;
