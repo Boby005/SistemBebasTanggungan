@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Mengeksekusi query
     $stmt = sqlsrv_query($conn, $sql, $params);
 
-    $sqlTanggal = "UPDATE dbo.adminJurusan_konfirmasi SET tanggal_adminJurusan_konfirmasi = GETDATE() WHERE nim = ?";
+    $sqlTanggal = "UPDATE dbo.adminPusat_konfirmasi SET tanggal_adminPusat_konfirmasi = GETDATE() WHERE nim = ?";
     $params2 = [$nim];
 
     $stmt2 = sqlsrv_query($conn, $sqlTanggal, $params2);
