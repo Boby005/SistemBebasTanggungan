@@ -206,7 +206,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nama-berkas="<?= $row['nim'] . "_bebas_pinjam_perpustakaan.pdf" ?>"
                                                             data-pdf="../../Documents/uploads/bebas_pinjam_perpustakaan/<?= $row['nim'] ?>_bebas_pinjam_perpustakaan.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
-                                                            <i class="fa fa-solid fa-file-lines"></i> Preview
+                                                            <i class="fa fa-solid fa-file-lines"></i> Edit
                                                         </button>
                                                     <?php else: ?>
                                                         <button class="btn btn-primary btn-sm edit-data"

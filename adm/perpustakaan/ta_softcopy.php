@@ -206,7 +206,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                                                             data-nama-berkas="<?= $row['nim'] . "_ta_softcopy.pdf" ?>"
                                                             data-pdf="../../Documents/uploads/ta_softcopy/<?= $row['nim'] ?>_ta_softcopy.pdf"
                                                             data-target="#verifikasiModal" data-toggle="modal">
-                                                            <i class="fa fa-solid fa-file-lines"></i> Preview
+                                                            <i class="fa fa-solid fa-file-lines"></i> Edit
                                                         </button>
                                                     <?php else: ?>
                                                         <button class="btn btn-primary btn-sm edit-data"
@@ -272,7 +272,7 @@ if (isset($_GET['message']) && isset($_GET['type'])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="../index.html">Logout</a>
+                    <a class="btn btn-primary" href="../../index.html">Logout</a>
                 </div>
             </div>
         </div>
